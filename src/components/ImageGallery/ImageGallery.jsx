@@ -1,5 +1,8 @@
 import { Component } from 'react';
-import { ImageGalleryList, ImageGalleryLoadButton } from './ImageGallery.styled';
+import {
+  ImageGalleryList,
+  ImageGalleryLoadButton,
+} from './ImageGallery.styled';
 import { ImageGalleryItem } from './ImageGalleryItem';
 import { Loader } from './Loader';
 import { Modal } from '../Modal/Modal';
@@ -11,7 +14,7 @@ export class ImageGallery extends Component {
     images: PropTypes.array.isRequired,
     imagesHandler: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
-    loadMore: PropTypes.func.isRequired
+    loadMore: PropTypes.func.isRequired,
   };
 
   state = {
@@ -20,36 +23,34 @@ export class ImageGallery extends Component {
     largeImage: '',
   };
 
-
-
-
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.imgName !== this.props.imgName || prevProps.page !== this.props.page) {
+    if (
+      prevProps.imgName !== this.props.imgName ||
+      prevProps.page !== this.props.page
+    ) {
       this.setState({ loading: true });
-      try{fetch(
-        `https://pixabay.com/api/?q=${this.props.imgName}&page=${this.props.page}&key=30483075-32508e0f0aa6f1eedcbd37828&image_type=photo&orientation=horizontal&per_page=20`
-      ).then(res =>
-        res
-          .json()
-          .then(images => {
-              images.hits.map(({id, webformatURL, largeImageURL}) => {
-                this.props.imagesHandler([{id: id, webformatURL: webformatURL,largeImageURL: largeImageURL }]);
+      try {
+        fetch(
+          `https://pixabay.com/api/?q=${this.props.imgName}&page=${this.props.page}&key=30483075-32508e0f0aa6f1eedcbd37828&image_type=photo&orientation=horizontal&per_page=20`
+        ).then(res =>
+          res
+            .json()
+            .then(images => {
+              images.hits.map(({ id, webformatURL, largeImageURL }) => {
+                this.props.imagesHandler([
+                  {
+                    id: id,
+                    webformatURL: webformatURL,
+                    largeImageURL: largeImageURL,
+                  },
+                ]);
+              });
             })
-
-            
-          
-          }
-          
-        )
-        .finally(this.setState({ loading: false  })))
-        }
-      catch(error){
-      }
+            .finally(this.setState({ loading: false }))
+        );
+      } catch (error) {}
     }
-   
   }
-
-
 
   openModal = e => {
     const eventElement = this.props.images.find(

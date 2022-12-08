@@ -1,49 +1,37 @@
-import { Component } from "react";
-import { SearchBar } from "./Searchbar/Searchbar";
-import { AppContainer } from "./App.styled";
-import { ImageGallery } from "./ImageGallery/ImageGallery";
+import { useState } from 'react';
+import { SearchBar } from './Searchbar/Searchbar';
+import { AppContainer } from './App.styled';
+import { ImageGallery } from './ImageGallery/ImageGallery';
 
+export const App = () => {
+  const [imgName, setImgName] = useState('');
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
 
-export class App extends Component {
-  state = {
-    imgName: '',
-    images: [],
-    page: 1,
+  const imagesHandler = data => {
+    setImages(state => [...state, ...data]);
   };
 
-  imagesHandler = data => {
-    this.setState(prevState => ({
-      images: [...prevState.images, ...data],
-    }));
+  const handleFormSubmit = imgName => {
+    setImgName(imgName);
+    setImages([]);
+    setPage(1);
   };
 
-  handleFormSubmit = imgName => {
-    this.setState({
-      imgName: imgName,
-      images: [],
-      page: 1 
-    });
+  const loadMore = () => {
+    setPage(state => state + 1);
   };
 
-  loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
-  };
-
-  render() {
-    const {imgName, images, page} = this.state
-    return (
-      <AppContainer>
-        <SearchBar onSubmit={this.handleFormSubmit} />
-        <ImageGallery
-          imgName={imgName}
-          images={images}
-          imagesHandler={this.imagesHandler}
-          page={page}
-          loadMore={this.loadMore}
-        />
-      </AppContainer>
-    );
-  }
+  return (
+    <AppContainer>
+      <SearchBar onSubmit={handleFormSubmit} />
+      <ImageGallery
+        imgName={imgName}
+        images={images}
+        imagesHandler={imagesHandler}
+        page={page}
+        loadMore={loadMore}
+      />
+    </AppContainer>
+  );
 };
