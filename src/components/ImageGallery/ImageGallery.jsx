@@ -31,7 +31,16 @@ export class ImageGallery extends Component {
       ).then(res =>
         res
           .json()
-          .then(images => this.props.imagesHandler(images))
+          .then(images => {
+              images.hits.map(({id, webformatURL, largeImageURL}) => {
+                this.props.imagesHandler([{id: id, webformatURL: webformatURL,largeImageURL: largeImageURL }]);
+            })
+
+            
+          
+          }
+          
+        )
         .finally(this.setState({ loading: false  })))
         }
       catch(error){

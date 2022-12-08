@@ -13,7 +13,7 @@ export class App extends Component {
 
   imagesHandler = data => {
     this.setState(prevState => ({
-      images: [...prevState.images, ...data.hits],
+      images: [...prevState.images, ...data],
     }));
   };
 
