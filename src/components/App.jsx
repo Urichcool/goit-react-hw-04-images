@@ -12,8 +12,8 @@ export const App = () => {
     setImages(state => [...state, ...data]);
   };
 
-  const handleFormSubmit = imgName => {
-    setImgName(imgName);
+  const handleFormSubmit = imageName => {
+    setImgName(imageName);
     setImages([]);
     setPage(1);
   };

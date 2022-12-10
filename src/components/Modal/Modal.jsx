@@ -1,40 +1,38 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { ModalBody, ModalOverlay } from './Modal.styled';
 import PropTypes from 'prop-types';
 
-export class Modal extends Component {
-  static propTypes = {
-    largeImage: PropTypes.string.isRequired,
-    onClose: PropTypes.func.isRequired,
-  };
+export const Modal = ({ largeImage, onClose }) => {
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
-
-  handleKeyDown = e => {
+  const handleKeyDown = e => {
     if (e.code === 'Escape') {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  handleOverlayClick = e => {
+  const handleOverlayClick = e => {
     if (e.currentTarget === e.target) {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  render() {
-    return (
-      <ModalOverlay onClick={this.handleOverlayClick}>
-        <ModalBody>
-          <img src={this.props.largeImage} alt="" />
-        </ModalBody>
-      </ModalOverlay>
-    );
-  }
-}
+  return (
+    <ModalOverlay onClick={handleOverlayClick}>
+      <ModalBody>
+        <img src={largeImage} alt="" />
+      </ModalBody>
+    </ModalOverlay>
+  );
+};
+
+Modal.propTypes = {
+  largeImage: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
