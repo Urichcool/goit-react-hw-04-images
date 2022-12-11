@@ -46,7 +46,6 @@ export const ImageGallery = ({
     } catch (error) {
       console.log(error);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imgName, page]);
 
   const openModal = e => {
