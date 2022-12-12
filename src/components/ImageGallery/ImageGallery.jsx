@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   ImageGalleryList,
   ImageGalleryLoadButton,
@@ -46,22 +46,21 @@ export const ImageGallery = ({
     } catch (error) {
       console.log(error);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imgName, page]);
+  }, [imgName, page, imagesHandler]);
 
   const openModal = e => {
-    const eventElement = images.find(
-      img => img.id.toString() === e.target.closest('li').id
-    );
-
-    setLargeImage(eventElement.largeImageURL);
-
-    togleModal();
+    if (e.target.closest('li')) {
+      const eventElement = images.find(
+        img => img.id.toString() === e.target.closest('li').id
+      );
+      setLargeImage(eventElement.largeImageURL);
+      togleModal();
+    }
   };
 
-  const togleModal = () => {
+  const togleModal = useCallback(() => {
     setShowModal(!showModal);
-  };
+  }, [showModal]);
 
   return (
     <>
